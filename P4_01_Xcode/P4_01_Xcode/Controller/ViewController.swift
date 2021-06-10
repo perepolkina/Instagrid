@@ -20,6 +20,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet weak var layout3: UIButton!
     
     var testArray = ["Layout 1","Layout 1"] // need to change. Use only fo test
+    var imageIndex = 0 // need to change. Use only fo test
     @IBOutlet weak var swipeAction: UILabel!
     
     override func viewDidLoad() {
@@ -43,6 +44,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         vc.allowsEditing = true
         vc.delegate = self
         present(vc, animated: true)
+        
+        imageIndex = sender.tag
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -52,9 +55,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             print("No image found")
             return
         }
-        
-        buttonAddImage1.setImage(photo.withRenderingMode(.alwaysOriginal), for: .normal)
-        buttonAddImage1.contentMode = .scaleAspectFill
+        switch imageIndex {
+        case 0:
+            buttonAddImage1.setImage(photo.withRenderingMode(.alwaysOriginal), for: .normal)
+            buttonAddImage1.contentMode = .scaleAspectFill
+        case 1:
+            buttonAddImage2.setImage(photo.withRenderingMode(.alwaysOriginal), for: .normal)
+            buttonAddImage2.contentMode = .scaleAspectFill
+        case 2:
+            buttonAddImage3.setImage(photo.withRenderingMode(.alwaysOriginal), for: .normal)
+            buttonAddImage3.contentMode = .scaleAspectFill
+        case 3:
+            buttonAddImage4.setImage(photo.withRenderingMode(.alwaysOriginal), for: .normal)
+            buttonAddImage4.contentMode = .scaleAspectFill
+        default:
+            break
+        }
         
         dismiss(animated: true, completion: nil)
     }

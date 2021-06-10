@@ -63,11 +63,17 @@
                                                 <rect key="frame" x="10" y="5" width="135" height="135"/>
                                                 <color key="backgroundColor" red="0.94110363720000001" green="0.94123524430000005" blue="0.94106358290000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="Plus"/>
+                                                <connections>
+                                                    <action selector="AddImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ryP-j1-cnE"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7tq-Ou-2YB" userLabel="Button4">
                                                 <rect key="frame" x="155" y="5" width="135" height="135"/>
                                                 <color key="backgroundColor" red="0.94110363720000001" green="0.94123524430000005" blue="0.94106358290000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="Plus"/>
+                                                <connections>
+                                                    <action selector="AddImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y1y-j2-mhY"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.051069065929999997" green="0.40352165699999998" blue="0.60645639900000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
