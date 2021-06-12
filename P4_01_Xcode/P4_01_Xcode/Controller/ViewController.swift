@@ -8,8 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-
-    
+    //add all outlets necessary
     @IBOutlet weak var buttonAddImage1: UIButton!
     @IBOutlet weak var buttonAddImage2: UIButton!
     @IBOutlet weak var buttonAddImage3: UIButton!
@@ -19,85 +18,124 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet weak var layout2: UIButton!
     @IBOutlet weak var layout3: UIButton!
     
-    var testArray = ["Layout 1","Layout 1"] // need to change. Use only fo test
-    var imageIndex = 0 // need to change. Use only fo test
-    @IBOutlet weak var swipeAction: UILabel!
+    @IBOutlet weak var mainLayout: UIStackView!
+    
+    @IBOutlet var swipeAction: UIView!
+    @IBOutlet weak var swipeText: UILabel!
+    
+    //  we need var  imageIndex for switch in the func imagePickerController
+    var imageIndex = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        buttonAddImage3.isHidden = true
         
         swipeAction.isUserInteractionEnabled = true
         let swipeUP = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGesture))
-        swipeUP.direction = UISwipeGestureRecognizer.Direction.up
+        swipeUP.direction = .up
         swipeAction.addGestureRecognizer(swipeUP)
     }
     
     @objc func swipeGesture(sender: UISwipeGestureRecognizer){
-        let shareController = UIActivityViewController(activityItems: testArray, applicationActivities: nil)
+        //to save collage
+        guard let image = getImageFromCollage() else { return }
+        let shareController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(shareController, animated: true, completion: nil)
+        
     }
     
+//change properties in landscape orientation
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+       let swipeDirection = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGesture))
+        
+        if UIDevice.current.orientation == .portrait {
+            swipeText.text = "Swipe up to share"
+            swipeDirection.direction = .up
+            //swipeAction.addGestureRecognizer(swipeDirection)
+        } else {
+            swipeText.text = "Swipe left to share"
+            swipeDirection.direction = .left
+        }
+        swipeAction.addGestureRecognizer(swipeDirection)
+    }
+    
+
+    
+    //Get a context from the main layout frame, and create an image based on its layer.
+    private func getImageFromCollage() -> UIImage? { //
+        UIGraphicsBeginImageContextWithOptions(mainLayout.frame.size, true, 0)
+        mainLayout.layer.render(in: UIGraphicsGetCurrentContext()!)
+        guard let collage = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
+        return collage
+    }
+    
+    // To use Image Picker from gallery
     @IBAction func AddImage(_ sender: UIButton) {
         let vc = UIImagePickerController()
         vc.sourceType = .photoLibrary
         vc.allowsEditing = true
         vc.delegate = self
         present(vc, animated: true)
-        
         imageIndex = sender.tag
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        picker.dismiss(animated: true)
-
         guard let photo = info[.editedImage] as? UIImage else {
             print("No image found")
             return
         }
+        
         switch imageIndex {
-        case 0:
-            buttonAddImage1.setImage(photo.withRenderingMode(.alwaysOriginal), for: .normal)
-            buttonAddImage1.contentMode = .scaleAspectFill
-        case 1:
-            buttonAddImage2.setImage(photo.withRenderingMode(.alwaysOriginal), for: .normal)
-            buttonAddImage2.contentMode = .scaleAspectFill
-        case 2:
-            buttonAddImage3.setImage(photo.withRenderingMode(.alwaysOriginal), for: .normal)
-            buttonAddImage3.contentMode = .scaleAspectFill
-        case 3:
-            buttonAddImage4.setImage(photo.withRenderingMode(.alwaysOriginal), for: .normal)
-            buttonAddImage4.contentMode = .scaleAspectFill
+        case 0: imageForButton(chooseButton: buttonAddImage1, newImage: photo)
+        case 1: imageForButton(chooseButton: buttonAddImage2, newImage: photo)
+        case 2: imageForButton(chooseButton: buttonAddImage3, newImage: photo)
+        case 3: imageForButton(chooseButton: buttonAddImage4, newImage: photo)
         default:
             break
         }
         
-        dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true)
     }
     
+    // to audate button image
+    func imageForButton(chooseButton: UIButton, newImage: UIImage) {
+        chooseButton.setImage(nil, for: .normal)
+        chooseButton.imageView?.contentMode  = .scaleAspectFill
+        chooseButton.setImage(newImage, for: .normal)
+    }
     
-   //change layout by clicking
+    //change layout by clicking
     @IBAction func layoutAction(_ sender: UIButton) {
+        buttonAddImage3.isHidden = true
         if sender.tag == 0 {
-            buttonAddImage1.isHidden = true
-            buttonAddImage3.isHidden = false
-            layout1.setImage(UIImage(named: "Selected"), for: .normal)
-            layout2.setImage(UIImage(named: "Layout 2"), for: .normal)
-            layout3.setImage(UIImage(named: "Layout 3"), for: .normal)
-            
+            hiddeImage(buttonHidden: buttonAddImage1, buttonNonHidden: buttonAddImage3)
+            selectedLayout(selectedLayout: layout1)
         } else if sender.tag == 1 {
-            buttonAddImage1.isHidden = false
-            buttonAddImage3.isHidden = true
-            layout2.setImage(UIImage(named: "Selected"), for: .normal)
-            layout1.setImage(UIImage(named: "Layout 1"), for: .normal)
-            layout3.setImage(UIImage(named: "Layout 3"), for: .normal)
+            hiddeImage(buttonHidden: buttonAddImage3, buttonNonHidden: buttonAddImage1)
+            selectedLayout(selectedLayout: layout2)
         } else if sender.tag == 2 {
             buttonAddImage3.isHidden = false
             buttonAddImage1.isHidden = false
-            layout3.setImage(UIImage(named: "Selected"), for: .normal)
-            layout1.setImage(UIImage(named: "Layout 1"), for: .normal)
-            layout2.setImage(UIImage(named: "Layout 2"), for: .normal)
+            selectedLayout(selectedLayout: layout3)
         }
     }
+    
+    // to update selected layout
+    func alllayout() {
+        layout1.setImage(UIImage(named: "Layout 1"), for: .normal)
+        layout2.setImage(UIImage(named: "Layout 2"), for: .normal)
+        layout3.setImage(UIImage(named: "Layout 3"), for: .normal)
+    }
+    //to add image "Selected"
+    func selectedLayout(selectedLayout: UIButton) {
+        alllayout()
+        selectedLayout.setImage(UIImage(named: "Selected"), for: .normal)
+    }
+    
+    func hiddeImage(buttonHidden: UIButton, buttonNonHidden: UIButton){
+        buttonHidden.isHidden = true
+        buttonNonHidden.isHidden = false
+    }
 }
+
 
