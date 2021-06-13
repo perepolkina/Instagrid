@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina3_5" orientation="portrait" appearance="dark"/>
+    <device id="retina3_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -25,6 +25,10 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instagrid  " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPC-CW-XCO">
                                 <rect key="frame" x="71" y="20" width="178" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="178" id="VxF-zf-BQH"/>
+                                    <constraint firstAttribute="width" secondItem="ZPC-CW-XCO" secondAttribute="height" multiplier="89:26" id="krC-Ox-C1N"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="ThirstySoftRegular" family="Thirsty Soft" pointSize="40"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -211,6 +215,10 @@
                                 <exclude reference="Ggv-Zu-eHM"/>
                                 <exclude reference="aUd-Rs-0Fc"/>
                                 <exclude reference="kgg-a0-dD1"/>
+                                <exclude reference="DkW-9G-Wah"/>
+                                <exclude reference="Ghg-py-5LE"/>
+                                <exclude reference="GlP-KZ-q0I"/>
+                                <exclude reference="vsp-hH-c3a"/>
                                 <exclude reference="Qqe-ke-ZB3"/>
                                 <exclude reference="c03-lk-9oU"/>
                                 <exclude reference="s7L-A7-Ob6"/>
@@ -221,10 +229,6 @@
                                 <exclude reference="Zyx-A8-Fbo"/>
                                 <exclude reference="nKa-r4-Mlj"/>
                                 <exclude reference="qnS-l4-6xY"/>
-                                <exclude reference="DkW-9G-Wah"/>
-                                <exclude reference="Ghg-py-5LE"/>
-                                <exclude reference="GlP-KZ-q0I"/>
-                                <exclude reference="vsp-hH-c3a"/>
                                 <exclude reference="D5K-2t-xUh"/>
                                 <exclude reference="KLI-O9-clS"/>
                                 <exclude reference="bEc-xg-d3e"/>
@@ -237,6 +241,12 @@
                                 <include reference="Ggv-Zu-eHM"/>
                                 <include reference="aUd-Rs-0Fc"/>
                                 <include reference="kgg-a0-dD1"/>
+                                <exclude reference="5oh-fa-RFN"/>
+                                <include reference="DkW-9G-Wah"/>
+                                <exclude reference="Ghg-py-5LE"/>
+                                <include reference="GlP-KZ-q0I"/>
+                                <exclude reference="XuR-D4-3mJ"/>
+                                <exclude reference="vsp-hH-c3a"/>
                                 <exclude reference="HmQ-JF-vFL"/>
                                 <exclude reference="Qqe-ke-ZB3"/>
                                 <include reference="c03-lk-9oU"/>
@@ -253,12 +263,6 @@
                                 <include reference="nKa-r4-Mlj"/>
                                 <exclude reference="opP-Td-LO1"/>
                                 <include reference="qnS-l4-6xY"/>
-                                <exclude reference="5oh-fa-RFN"/>
-                                <include reference="DkW-9G-Wah"/>
-                                <exclude reference="Ghg-py-5LE"/>
-                                <include reference="GlP-KZ-q0I"/>
-                                <exclude reference="XuR-D4-3mJ"/>
-                                <exclude reference="vsp-hH-c3a"/>
                                 <exclude reference="3bl-2y-wVC"/>
                                 <exclude reference="D5K-2t-xUh"/>
                                 <include reference="KLI-O9-clS"/>

@@ -97,7 +97,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         picker.dismiss(animated: true)
     }
     
-    // to audate button image
+    // to update button image
     func imageForButton(chooseButton: UIButton, newImage: UIImage) {
         chooseButton.setImage(nil, for: .normal)
         chooseButton.imageView?.contentMode  = .scaleAspectFill
