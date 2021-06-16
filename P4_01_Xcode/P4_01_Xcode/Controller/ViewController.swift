@@ -34,6 +34,38 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         let swipeUP = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGesture))
         swipeUP.direction = .up
         swipeAction.addGestureRecognizer(swipeUP)
+        
+        mainLayout.isUserInteractionEnabled = true
+        mainLayout.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.panGesture)))
+    }
+    
+    
+    @objc func panGesture(sender: UIPanGestureRecognizer) {
+        switch sender.state {
+        case .began, .changed:
+            moveGrid(gesture: sender)
+        case .ended:
+            print("end")
+        default:
+            break
+        }
+    }
+    
+    func moveGrid(gesture: UIPanGestureRecognizer ){
+        let translation  = gesture.translation(in: mainLayout)
+        if UIDevice.current.orientation == .portrait {
+            if translation.y < -5 {
+                mainLayout.transform = CGAffineTransform(translationX: 0, y: translation.y)
+            } else {
+                mainLayout.transform = .identity
+            }
+        } else {
+            if translation.x < -10 {
+                mainLayout.transform = CGAffineTransform(translationX: translation.x, y: 0)
+            } else {
+                mainLayout.transform = .identity
+            }
+        }
     }
     
     @objc func swipeGesture(sender: UISwipeGestureRecognizer){
