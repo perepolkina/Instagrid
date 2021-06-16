@@ -30,42 +30,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         super.viewDidLoad()
         buttonAddImage3.isHidden = true
         
-        swipeAction.isUserInteractionEnabled = true
-        let swipeUP = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGesture))
-        swipeUP.direction = .up
-        swipeAction.addGestureRecognizer(swipeUP)
+        createSwipe()
         
         mainLayout.isUserInteractionEnabled = true
         mainLayout.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.panGesture)))
     }
-    
-    
-    @objc func panGesture(sender: UIPanGestureRecognizer) {
-        switch sender.state {
-        case .began, .changed:
-            moveGrid(gesture: sender)
-        case .ended:
-            print("end")
-        default:
-            break
-        }
-    }
-    
-    func moveGrid(gesture: UIPanGestureRecognizer ){
-        let translation  = gesture.translation(in: mainLayout)
-        if UIDevice.current.orientation == .portrait {
-            if translation.y < -5 {
-                mainLayout.transform = CGAffineTransform(translationX: 0, y: translation.y)
-            } else {
-                mainLayout.transform = .identity
-            }
-        } else {
-            if translation.x < -10 {
-                mainLayout.transform = CGAffineTransform(translationX: translation.x, y: 0)
-            } else {
-                mainLayout.transform = .identity
-            }
-        }
+   
+    //swipe____________________________
+    private func createSwipe(){
+        swipeAction.isUserInteractionEnabled = true
+        //mainLayout.isUserInteractionEnabled = true
+        let swipeUP = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGesture))
+        swipeUP.direction = .up
+        //mainLayout.addGestureRecognizer(swipeUP)
+        swipeAction.addGestureRecognizer(swipeUP)
     }
     
     @objc func swipeGesture(sender: UISwipeGestureRecognizer){
@@ -75,23 +53,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         present(shareController, animated: true, completion: nil)
         
     }
-    
-//change properties in landscape orientation
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-       let swipeDirection = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGesture))
-        
-        if UIDevice.current.orientation == .portrait {
-            swipeText.text = "Swipe up to share"
-            swipeDirection.direction = .up
-            //swipeAction.addGestureRecognizer(swipeDirection)
-        } else {
-            swipeText.text = "Swipe left to share"
-            swipeDirection.direction = .left
-        }
-        swipeAction.addGestureRecognizer(swipeDirection)
+    @objc func  TestswipeGesture(sender: UIPanGestureRecognizer){
+        //to save collage
+        guard let image = getImageFromCollage() else { return }
+        let shareController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        present(shareController, animated: true, completion: nil)
     }
     
-
     
     //Get a context from the main layout frame, and create an image based on its layer.
     private func getImageFromCollage() -> UIImage? { //
@@ -101,6 +69,67 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         return collage
     }
     
+    
+ //PAN____________________________
+    @objc func panGesture(sender1: UIPanGestureRecognizer) {
+        switch sender1.state {
+        case .began, .changed:
+            moveGrid(gesture: sender1)
+        case .ended:
+
+            TestswipeGesture(sender: sender1)
+            animation()
+        default:
+            break
+        }
+    }
+    
+    var check = false
+    func moveGrid(gesture: UIPanGestureRecognizer ){
+        let translation  = gesture.translation(in: mainLayout)
+        if UIDevice.current.orientation == .portrait {
+            if translation.y < 0 {
+                mainLayout.transform = CGAffineTransform(translationX: 0, y: translation.y)
+                check = true
+            } else {
+                mainLayout.transform = .identity
+                check = false
+            }
+        } else {
+            if translation.x < 0 {
+                mainLayout.transform = CGAffineTransform(translationX: translation.x, y: 0)
+            } else {
+                mainLayout.transform = .identity
+            }
+        }
+    }
+    
+    private func animation() {
+        if UIDevice.current.orientation == .portrait {
+            UIView.animate(withDuration: 5, animations: {self.mainLayout.transform = CGAffineTransform(translationX: 0, y: 1000)})
+        } else {
+            UIView.animate(withDuration: 5, animations: {self.mainLayout.transform = CGAffineTransform(translationX: 500, y: 0)})
+        }
+                UIView.animate(withDuration: 1, animations: {self.mainLayout.transform = CGAffineTransform(translationX: 0, y: 0)})
+        }
+//___________________
+    
+//change properties in landscape orientation
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+       let swipeDirection = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGesture))
+        
+        if UIDevice.current.orientation == .portrait {
+            swipeText.text = "Swipe up to share"
+            swipeDirection.direction = .up
+        } else {
+            swipeText.text = "Swipe left to share"
+            swipeDirection.direction = .left
+        }
+        swipeAction.addGestureRecognizer(swipeDirection)
+    }
+    
+
+    //____________________________________________________________
     // To use Image Picker from gallery
     @IBAction func AddImage(_ sender: UIButton) {
         let vc = UIImagePickerController()
