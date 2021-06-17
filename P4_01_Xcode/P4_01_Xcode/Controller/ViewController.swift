@@ -20,33 +20,37 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBOutlet weak var mainLayout: UIStackView!
     
-    @IBOutlet var swipeAction: UIView!
     @IBOutlet weak var swipeText: UILabel!
     
     //for switch in the func imagePickerController
     var imageIndex = 0
+    //to set the orientation after launching the application
+    var deviceOrientation : UIDeviceOrientation = .portrait
+    let screenHeight = UIScreen.main.bounds.height
+    let screenWidth = UIScreen.main.bounds.width
     
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonAddImage3.isHidden = true
         
-        createSwipe()
+        configurationOrientation()
         mainLayout.isUserInteractionEnabled = true
         mainLayout.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(self.panGesture)))
     }
     
-    // This part is need to start app with swipeUP
-    private func createSwipe(){
-        // mainLayout.isUserInteractionEnabled = true
-        let swipeUP = UISwipeGestureRecognizer(target: self, action: #selector(self.swipeGesture))
-        swipeUP.direction = .up
-        mainLayout.addGestureRecognizer(swipeUP)
-    }
-    @objc func swipeGesture(sender: UISwipeGestureRecognizer){ //test
+    // to change var deviceOrientation
+    private func configurationOrientation() {
+        if screenHeight > screenWidth {
+            swipeText.text = "Swipe up to share"
+            deviceOrientation = .portrait
+        } else {
+            swipeText.text = "Swipe left to share"
+            deviceOrientation = .landscapeLeft
+        }
     }
     
     //Logic of PanGestureRecognizer
-    //status of
+    //status of PanGestureRecognizer
     @objc func panGesture(senderPan: UIPanGestureRecognizer) {
         switch senderPan.state {
         case .began, .changed:
@@ -60,11 +64,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             break
         }
     }
-    //to move GridView according to torientation (animation swipe°
+    //to move GridView according to orientation (animation swipe)
     var checkPosition = false
     func moveGrid(gesture: UIPanGestureRecognizer ){
         let translation  = gesture.translation(in: mainLayout)
-        if UIDevice.current.orientation == .portrait {
+        if deviceOrientation == .portrait {
             if translation.y < 0 {
                 mainLayout.transform = CGAffineTransform(translationX: 0, y: translation.y)
                 checkPosition = true
@@ -82,21 +86,27 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
             }
         }
     }
-    
+    //animation for swipe
     private func animation() {
-        if UIDevice.current.orientation == .portrait {
-            UIView.animate(withDuration: 5, animations: {self.mainLayout.transform = CGAffineTransform(translationX: 0, y: 1000)})
+        if deviceOrientation == .portrait {
+            UIView.animate(withDuration: 1, animations: {self.mainLayout.transform = CGAffineTransform(translationX: 0, y: -UIScreen.main.bounds.height)})
         } else {
-            UIView.animate(withDuration: 5, animations: {self.mainLayout.transform = CGAffineTransform(translationX: 500, y: 0)})
+            UIView.animate(withDuration: 1, animations: {self.mainLayout.transform = CGAffineTransform(translationX: -UIScreen.main.bounds.width, y: 0)})
         }
-        UIView.animate(withDuration: 1, animations: {self.mainLayout.transform = CGAffineTransform(translationX: 0, y: 0)})
     }
     
     
     //to  save collages and to share it
-    @objc func  shareImage (sender: UIPanGestureRecognizer){
+    @objc func shareImage(sender: UIPanGestureRecognizer) {
         guard let image = getImageFromCollage() else { return }
         let shareController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        shareController.completionWithItemsHandler = { (_ , _ , _ , error) in
+            guard error == nil else {
+                return
+            }
+            //it calls a function to put mainLayout back in the right place
+            UIView.animate(withDuration: 0.5, animations: {self.mainLayout.transform = CGAffineTransform(translationX: 0, y: 0)})
+        }
         present(shareController, animated: true, completion: nil)
     }
     
@@ -112,15 +122,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if UIDevice.current.orientation == .portrait {
             swipeText.text = "Swipe up to share"
+            deviceOrientation = .portrait
         } else {
             swipeText.text = "Swipe left to share"
+            deviceOrientation = .landscapeLeft
         }
     }
     
-    
     // Logic of the image Picker
-    // choose image from gallery
-    @IBAction func AddImage(_ sender: UIButton) {
+    // to choosen and to add image from gallery
+    @IBAction func addImage(_ sender: UIButton) {
         let vc = UIImagePickerController()
         vc.sourceType = .photoLibrary
         vc.allowsEditing = true
@@ -128,7 +139,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         present(vc, animated: true)
         imageIndex = sender.tag
     }
-    //to add choosen image
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let photo = info[.editedImage] as? UIImage else {
             print("No image found")
@@ -152,7 +163,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         chooseButton.setImage(newImage, for: .normal)
     }
     
-    //change GridView by choosing layout
+    //change GridView by choosing layout (hide button if it's necessary)
     @IBAction func layoutAction(_ sender: UIButton) {
         buttonAddImage3.isHidden = true
         if sender.tag == 0 {
@@ -168,6 +179,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
     }
     
+    func hideImage(buttonHidden: UIButton, buttonNonHidden: UIButton){
+        buttonHidden.isHidden = true
+        buttonNonHidden.isHidden = false
+    }
+    
     // to update all layouts
     func updateAllLayouts() {
         layout1.setImage(UIImage(named: "Layout 1"), for: .normal)
@@ -181,10 +197,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         selectedLayout.setImage(UIImage(named: "Selected"), for: .normal)
     }
     
-    func hideImage(buttonHidden: UIButton, buttonNonHidden: UIButton){
-        buttonHidden.isHidden = true
-        buttonNonHidden.isHidden = false
-    }
+    
 }
 
 

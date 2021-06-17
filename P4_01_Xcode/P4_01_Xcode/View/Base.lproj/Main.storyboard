@@ -111,7 +111,7 @@
                                                 <color key="backgroundColor" red="0.94110363720000001" green="0.94123524430000005" blue="0.94106358290000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="Plus"/>
                                                 <connections>
-                                                    <action selector="AddImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tCV-Yp-qPr"/>
+                                                    <action selector="addImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RTV-bq-Ifo"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l1U-Q9-qeU" userLabel="Button2">
@@ -119,7 +119,7 @@
                                                 <color key="backgroundColor" red="0.94110363720000001" green="0.94123524430000005" blue="0.94106358290000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="Plus"/>
                                                 <connections>
-                                                    <action selector="AddImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bkz-X5-orh"/>
+                                                    <action selector="addImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bzM-pg-kOm"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -135,7 +135,7 @@
                                                 <color key="backgroundColor" red="0.94110363720000001" green="0.94123524430000005" blue="0.94106358290000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="Plus"/>
                                                 <connections>
-                                                    <action selector="AddImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ryP-j1-cnE"/>
+                                                    <action selector="addImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8Hu-Gi-HoK"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7tq-Ou-2YB" userLabel="Button4">
@@ -143,7 +143,7 @@
                                                 <color key="backgroundColor" red="0.94110363720000001" green="0.94123524430000005" blue="0.94106358290000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="Plus"/>
                                                 <connections>
-                                                    <action selector="AddImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y1y-j2-mhY"/>
+                                                    <action selector="addImage:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tdm-sr-drq"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -282,12 +282,10 @@
                         <outlet property="layout2" destination="11L-8B-tRH" id="Scu-Oo-e06"/>
                         <outlet property="layout3" destination="L1U-Db-Xte" id="z45-Iu-i00"/>
                         <outlet property="mainLayout" destination="VQk-nl-F8p" id="RJe-yt-QBB"/>
-                        <outlet property="swipeAction" destination="8bC-Xf-vdC" id="enI-9j-RGC"/>
                         <outlet property="swipeText" destination="qYU-af-AMp" id="qTH-df-y5p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="right" id="kWR-08-rrp"/>
                 <panGestureRecognizer minimumNumberOfTouches="1" id="8Q9-aa-0HF">
                     <connections>
                         <outlet property="delegate" destination="VQk-nl-F8p" id="Nh7-9e-GHH"/>
